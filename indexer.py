@@ -31,10 +31,11 @@ def build_inverted_index(data_dir: str) -> dict:
         words = preprocess_text(text)
 
         # updating the inverted index 
-        for word in words 
-            if word not in inverted_index = {}
+        for word in words: 
+            if word not in inverted_index:
                 inverted_index[word] = set()
-                inverted_index[word].add(filename)
+
+            inverted_index[word].add(filename)
 
     return inverted_index
 
