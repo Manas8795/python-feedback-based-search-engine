@@ -1,4 +1,5 @@
 import os # to let the user open the files later after the results 
+import subprocess # to use xdg to open the files later 
 from indexer import build_inverted_index
 from search import search
 
@@ -29,17 +30,33 @@ def main():
             print("No matching results found.\n")
         else:
             print("Search Results:")
+            ctr = 1
             for filename,score in results:
+                print(f"{ctr}.{filename} - score : {score}")
+                ctr+=1
+            
+            choice = input("\nDo you want to open a file , enter the number if not enter 0 : ").strip().lower()
 
-                # now building all the files as clickable files so first making the path 
-                abs_path = os.path.abspath(
-                        os.path.join(data_directory,filename)
-                        )
-                
-                #convert into clickable url 
-                file_url = f"file;//{abs_path}"
+            if choice.isdigit():
+                choice = int(choice)
 
-                print(f"- {file_url} (score : {score})")
+                if choice == 0:
+                # User chose not to open any file
+                    pass
+
+                elif 1 <= choice <= len(results):
+                    filename = results[choice - 1][0]
+                    file_path = os.path.abspath(
+                        os.path.join(data_directory, filename)
+                    )
+                    subprocess.run(["xdg-open", file_path])
+
+                else:
+                    print("Invalid file number.\n")
+            else:
+                print("Please enter a valid number.\n")
+
             print()
+
 if __name__ ==  "__main__":
     main()
